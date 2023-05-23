@@ -1,6 +1,7 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from croniter import croniter
+from pydantic import BaseModel, validator
 
 
 class Task(BaseModel):
@@ -11,3 +12,10 @@ class Task(BaseModel):
     end: datetime | None = None
     repeat: str = ""
     all_day: bool = False
+
+    @validator('repeat')
+    def validate_repeat(cls, v):
+        if v == "" or croniter.is_valid(v):
+            return v
+        else:
+            return ValueError("crontab is invalid")
