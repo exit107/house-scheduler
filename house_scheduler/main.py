@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from pydantic import ValidationError
+
 from models import Task
 
 task_data = {
@@ -9,8 +11,27 @@ task_data = {
     "start": datetime.now(),
     "end": datetime.now(),
     "repeat": "",
-    "all_day": False
+    "all_day": False,
 }
 
-task = Task(**task_data)
-print(task)
+try:
+    task = Task(**task_data)
+    print(task)
+except ValidationError as e:
+    print(e)
+
+task_data_with_crontab = {
+    "id": 2,
+    "name": "clean kitchen",
+    "description": "clean the kitchen",
+    "start": datetime.now(),
+    "end": datetime.now(),
+    "repeat": "@weekly",
+    "all_day": False,
+}
+
+try:
+    task2 = Task(**task_data_with_crontab)
+    print(task2)
+except ValidationError as e:
+    print(e)
