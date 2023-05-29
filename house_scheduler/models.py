@@ -13,7 +13,7 @@ class Task(BaseModel):
     repeat: str = ""
     all_day: bool = False
 
-    @validator('repeat')
+    @validator("repeat")
     def validate_repeat(cls, v):
         if v == "" or croniter.is_valid(v):
             return v
